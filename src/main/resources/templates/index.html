@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+
+    <title th:text="${titulo} ?: 'Crypto'">Crypto</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- Navbar Suave com Fundo Claro e Borda Sutil -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom border-secondary-subtle shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-dark d-flex align-items-center"
+           href="/">
+            <span>Crypto</span>
+        </a>
+    </div>
+</nav>
+
+
+<!-- Conteúdo Dinâmico -->
+<main class="container my-4 flex-grow-1">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border border-secondary-subtle">
+                <div class="card-body p-4">
+                    <form method="post" th:action="@{/}">
+                        <div class="row g-3">
+
+                            <!-- Texto -->
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold text-secondary" for="texto"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-secondary border-light-subtle">
+                                        <i class="bi bi-key me-1"></i>
+                                    </span>
+                                    <input class="form-control border-light-subtle" id="texto" name="texto"
+                                           placeholder="Texto a ser criptografado"
+                                           type="text">
+                                </div>
+                            </div>
+
+                            <!-- Texto Criptografado -->
+                            <div class="col-12 p-3 bg-light-subtle rounded border border-light-subtle">
+                                <span class="form-label small fw-semibold text-secondary">
+                                    <i class="bi bi-key me-1"></i>
+                                    Texto criptografado
+                                </span>
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <code class="text-dark bg-light px-2 py-3 rounded border border-light-subtle fw-semibold text-break small flex-grow-1"
+                                          id="chavePixTexto" th:text="${crypto}">
+                                        Texto criptografado aqui.
+                                    </code>
+                                    <button class="btn btn-outline-primary btn-sm fw-semibold d-inline-flex align-items-center gap-1"
+                                            onclick="copiarChavePix(this)"
+                                            type="button">
+                                        <i class="bi bi-clipboard"></i>
+                                        <span>Copiar</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Botões de Ação -->
+                            <div class="col-12 d-flex gap-2 pt-2">
+                                <button class="btn btn-primary flex-grow-1 py-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2 shadow-sm"
+                                        type="submit">
+                                    Criptografar
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<!-- Rodapé Suave -->
+<footer class="text-center text-secondary py-3 mt-auto border-top border-secondary-subtle bg-white">
+    <div class="container">
+        <p class="mb-0 small fw-medium">&copy; 2026 Crypto. Todos os
+            direitos reservados.</p>
+    </div>
+</footer>
+<script>
+    function copiarChavePix(btn) {
+        const chavePix = document.getElementById('chavePixTexto').innerText.trim();
+
+        navigator.clipboard.writeText(chavePix).then(() => {
+            const icon = btn.querySelector('i');
+            const span = btn.querySelector('span');
+
+            btn.classList.replace('btn-outline-primary', 'btn-success');
+            icon.classList.replace('bi-clipboard', 'bi-check-lg');
+            span.innerText = 'Copiado!';
+
+            setTimeout(() => {
+                btn.classList.replace('btn-success', 'btn-outline-primary');
+                icon.classList.replace('bi-check-lg', 'bi-clipboard');
+                span.innerText = 'Copiar';
+            }, 2000);
+        }).catch(err => {
+            console.error('Erro ao copiar chave PIX: ', err);
+        });
+    }
+</script>
+</body>
+</html>
